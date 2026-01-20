@@ -19,10 +19,12 @@ const canvas = document.querySelector<HTMLCanvasElement>('.canvas')!
 
 const renderer = new Renderer(canvas)
 const camera = new Camera()
-const cube = new Mesh(cubeVertices, cubeFaces)
-
+const cube = new Mesh(new Vec3(0, 0, 0), cubeVertices, cubeFaces)
+const cube2 = new Mesh(new Vec3(2, 2, 1), cubeVertices, cubeFaces)
+const cube3 = new Mesh(new Vec3(-1, -1, 1), cubeVertices, cubeFaces)
+const shapes = [cube, cube2, cube3]
 const loop = () => {
-  renderer.render(cube, camera)
+  renderer.render(shapes, camera)
   requestAnimationFrame(loop)
 }
 
