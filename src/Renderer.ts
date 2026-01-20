@@ -1,6 +1,6 @@
 import type Camera from './Camera'
 import type Mesh from './model/Mesh'
-import type Vec3 from './model/Vec3'
+import { getAverageDistance, project } from './utils'
 
 class Renderer {
   private ctx: CanvasRenderingContext2D
@@ -13,24 +13,14 @@ class Renderer {
     this.height = canvas.height
   }
 
-  private project(point: Vec3, camera: Camera) {
-    const x = point.x - camera.position.x
-    const y = point.y - camera.position.y
-    const z = point.z - camera.position.z
-
-    if (z <= 0) return null
-
-    return {
-      x: (x / z) * camera.fov + this.width / 2,
-      y: (y / z) * camera.fov + this.height / 2
-    }
-  }
-
   private drawCube(mesh: Mesh, camera: Camera) {
-    const projected = mesh.vertices.map(v => this.project(v, camera)).filter(p => p !== null)
+    const projected = mesh.vertices.map(v => project(v, camera, this.width, this.height)).filter(p => p !== null)
 
     this.ctx.strokeStyle = 'black'
-    for (const face of mesh.faces) {
+    this.ctx.fillStyle = 'orange'
+
+    const sortedFaces = mesh.faces.toSorted((f1, f2) => getAverageDistance(f2, mesh.vertices, camera) - getAverageDistance(f1, mesh.vertices, camera))
+    for (const face of sortedFaces) {
       this.ctx.beginPath()
       const p0 = projected[face[0]]
       if (!p0) continue
@@ -41,6 +31,7 @@ class Renderer {
         this.ctx.lineTo(p.x, p.y)
       }
       this.ctx.closePath()
+      this.ctx.fill()
       this.ctx.stroke()
     }
   }
