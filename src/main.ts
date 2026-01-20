@@ -32,7 +32,13 @@ const moveCamera = (e: KeyboardEvent) => {
   if (['d', 'ArrowRight'].includes(e.key)) camera.position.x += 0.2
 }
 
+const moveCameraAlongYAxis = (e: WheelEvent) => {
+  if (e.deltaY > 0) camera.position.y += 0.2
+  if (e.deltaY < 0) camera.position.y -= 0.2
+}
+
 window.addEventListener('keydown', moveCamera)
+window.addEventListener('wheel', moveCameraAlongYAxis)
 
 window.addEventListener('load', () => {
   loop()
