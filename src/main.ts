@@ -1,24 +1,13 @@
 import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import crappyLogo from '/vite.svg'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
+    <h1><img src="${crappyLogo}" class="logo" alt="Logo de CrappyEngineJs" />CrappyEngineJs</h1>
+    <p class="subtitle">
+      Crappy engine is a 3D engine built with vanilla JavaScript. It is an experiment with no purpose and no future.
     </p>
-  </div>
+    <div class="canvas-container">
+      <canvas class="canvas" width="1280" height="720"></canvas>
+    </div>
 `
-
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+const canvas = document.querySelector<HTMLCanvasElement>('.canvas')!
