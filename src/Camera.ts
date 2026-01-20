@@ -4,7 +4,7 @@ class Camera {
   public position: Vec3
   public fov: number
   constructor() {
-    this.position = new Vec3(0, 0, -5)
+    this.position = new Vec3(0, -0.5, -5)
     this.fov = 400
   }
 }
