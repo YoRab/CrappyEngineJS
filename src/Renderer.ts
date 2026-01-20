@@ -16,7 +16,7 @@ class Renderer {
   private drawCube(mesh: Mesh, camera: Camera) {
     const projected = mesh.vertices.map(v => project(v, camera, this.width, this.height)).filter(p => p !== null)
 
-    this.ctx.strokeStyle = 'black'
+    this.ctx.strokeStyle = 'rgba(50,50,50,0.25)'
 
     const sortedFaces = mesh.faces.toSorted((f1, f2) => getAverageDistance(f2, mesh.vertices, camera) - getAverageDistance(f1, mesh.vertices, camera))
     for (const face of sortedFaces) {

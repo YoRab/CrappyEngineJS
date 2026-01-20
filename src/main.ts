@@ -29,16 +29,18 @@ const loop = () => {
 const moveCamera = (e: KeyboardEvent) => {
   const speed = 0.2
 
-  const forward = new Vec3(-Math.sin(camera.yaw), 0, Math.cos(camera.yaw))
+  const forward = new Vec3(-Math.sin(camera.yaw) * Math.cos(camera.pitch), -Math.sin(camera.pitch), Math.cos(camera.yaw) * Math.cos(camera.pitch))
 
   const right = new Vec3(Math.cos(camera.yaw), 0, Math.sin(camera.yaw))
 
   if (['z', 'ArrowUp'].includes(e.key)) {
     camera.position.x += forward.x * speed
+    camera.position.y += forward.y * speed
     camera.position.z += forward.z * speed
   }
   if (['s', 'ArrowDown'].includes(e.key)) {
     camera.position.x -= forward.x * speed
+    camera.position.y -= forward.y * speed
     camera.position.z -= forward.z * speed
   }
   if (['q', 'ArrowLeft'].includes(e.key)) {
