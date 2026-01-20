@@ -1,4 +1,7 @@
 import Camera from './Camera'
+import Mesh from './model/Mesh'
+import Renderer from './Renderer'
+import { cubeVertices, cubeFaces } from './vertices/cube'
 import crappyLogo from '/vite.svg'
 import './style.css'
 
@@ -13,7 +16,14 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `
 const canvas = document.querySelector<HTMLCanvasElement>('.canvas')!
 
+const renderer = new Renderer(canvas)
 const camera = new Camera()
+const cube = new Mesh(cubeVertices, cubeFaces)
+
+const loop = () => {
+  renderer.render(cube, camera)
+  requestAnimationFrame(loop)
+}
 
 const moveCamera = (e: KeyboardEvent) => {
   if (['z', 'ArrowUp'].includes(e.key)) camera.position.z += 0.2
@@ -23,3 +33,7 @@ const moveCamera = (e: KeyboardEvent) => {
 }
 
 window.addEventListener('keydown', moveCamera)
+
+window.addEventListener('load', () => {
+  loop()
+})
