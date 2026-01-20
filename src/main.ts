@@ -4,6 +4,7 @@ import Renderer from './Renderer'
 import { cubeVertices, cubeFaces } from './vertices/cube'
 import crappyLogo from '/vite.svg'
 import './style.css'
+import Vec3 from './model/Vec3'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <h1><img src="${crappyLogo}" class="logo" alt="Logo de CrappyEngineJs" />CrappyEngineJs</h1>
@@ -26,10 +27,28 @@ const loop = () => {
 }
 
 const moveCamera = (e: KeyboardEvent) => {
-  if (['z', 'ArrowUp'].includes(e.key)) camera.position.z += 0.2
-  if (['s', 'ArrowDown'].includes(e.key)) camera.position.z -= 0.2
-  if (['q', 'ArrowLeft'].includes(e.key)) camera.position.x -= 0.2
-  if (['d', 'ArrowRight'].includes(e.key)) camera.position.x += 0.2
+  const speed = 0.2
+
+  const forward = new Vec3(-Math.sin(camera.yaw), 0, Math.cos(camera.yaw))
+
+  const right = new Vec3(Math.cos(camera.yaw), 0, Math.sin(camera.yaw))
+
+  if (['z', 'ArrowUp'].includes(e.key)) {
+    camera.position.x += forward.x * speed
+    camera.position.z += forward.z * speed
+  }
+  if (['s', 'ArrowDown'].includes(e.key)) {
+    camera.position.x -= forward.x * speed
+    camera.position.z -= forward.z * speed
+  }
+  if (['q', 'ArrowLeft'].includes(e.key)) {
+    camera.position.x -= right.x * speed
+    camera.position.z -= right.z * speed
+  }
+  if (['d', 'ArrowRight'].includes(e.key)) {
+    camera.position.x += right.x * speed
+    camera.position.z += right.z * speed
+  }
 }
 
 const moveCameraAlongYAxis = (e: WheelEvent) => {
