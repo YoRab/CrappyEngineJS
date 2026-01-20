@@ -40,6 +40,22 @@ const moveCameraAlongYAxis = (e: WheelEvent) => {
 window.addEventListener('keydown', moveCamera)
 window.addEventListener('wheel', moveCameraAlongYAxis)
 
+canvas.addEventListener('click', () => {
+  canvas.requestPointerLock()
+})
+
+const sensitivity = 0.002
+
+document.addEventListener('mousemove', e => {
+  if (document.pointerLockElement !== canvas) return
+
+  camera.yaw -= e.movementX * sensitivity
+  camera.pitch -= e.movementY * sensitivity
+
+  const limit = Math.PI / 2 - 0.01
+  camera.pitch = Math.max(-limit, Math.min(limit, camera.pitch))
+})
+
 window.addEventListener('load', () => {
   loop()
 })

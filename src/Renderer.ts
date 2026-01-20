@@ -17,16 +17,17 @@ class Renderer {
     const projected = mesh.vertices.map(v => project(v, camera, this.width, this.height)).filter(p => p !== null)
 
     this.ctx.strokeStyle = 'black'
-    this.ctx.fillStyle = 'orange'
 
     const sortedFaces = mesh.faces.toSorted((f1, f2) => getAverageDistance(f2, mesh.vertices, camera) - getAverageDistance(f1, mesh.vertices, camera))
     for (const face of sortedFaces) {
       this.ctx.beginPath()
+      this.ctx.fillStyle = face[3]
+
       const p0 = projected[face[0]]
       if (!p0) continue
       this.ctx.moveTo(p0.x, p0.y)
-      for (let i = 1; i < face.length; i++) {
-        const p = projected[face[i]]
+      for (let i = 1; i < 3; i++) {
+        const p = projected[face[i] as number]
         if (!p) continue
         this.ctx.lineTo(p.x, p.y)
       }
