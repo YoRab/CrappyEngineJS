@@ -9,7 +9,8 @@ export type MeshFace = {
   color: string
 }
 
-export type Mesh = {
+export type Shape = {
+  type: 'cube' | 'sphere'
   position: Vec3
   vertices: Vec3[]
   faces: MeshFace[]

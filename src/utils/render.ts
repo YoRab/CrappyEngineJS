@@ -1,7 +1,24 @@
-import type { Camera, Mesh, MeshFace } from '../types'
+import type { Camera, Shape } from '../types'
 import { getAverageDistance, project } from './trigo'
 
-export const drawCube = (ctx: CanvasRenderingContext2D, projected: { x: number; y: number }[], sortedFaces: MeshFace[]) => {
+export const getShapeData = (ctx: CanvasRenderingContext2D, meshes: Shape[], camera: Camera) => {
+  const meshesData = []
+  for (const mesh of meshes) {
+    const vertices = mesh.vertices.map(v => ({ x: v.x + mesh.position.x, y: v.y + mesh.position.y, z: v.z + mesh.position.z }))
+    const projected = vertices.map(v => project(v, camera, ctx.canvas.width, ctx.canvas.height)).filter(p => p !== null)
+    const faceDistances = mesh.faces.map(f => ({ ...f, distance: getAverageDistance(f, vertices, camera) }))
+    const sortedFaces = faceDistances.toSorted((f1, f2) => f2.distance - f1.distance)
+    meshesData.push({
+      type: mesh.type,
+      projected,
+      sortedFaces,
+      avgDistance: faceDistances.reduce((a, b) => a + b.distance, 0) / faceDistances.length
+    })
+  }
+  return meshesData
+}
+
+export const drawShape = (ctx: CanvasRenderingContext2D, projected: { x: number; y: number }[], sortedFaces: Shape['faces']) => {
   for (const face of sortedFaces) {
     ctx.beginPath()
     ctx.fillStyle = face.color
@@ -21,26 +38,14 @@ export const drawCube = (ctx: CanvasRenderingContext2D, projected: { x: number; 
   }
 }
 
-export const getMeshesData = (ctx: CanvasRenderingContext2D, meshes: Mesh[], camera: Camera) => {
-  const meshesData = []
-  for (const mesh of meshes) {
-    const vertices = mesh.vertices.map(v => ({ x: v.x + mesh.position.x, y: v.y + mesh.position.y, z: v.z + mesh.position.z }))
-    const projected = vertices.map(v => project(v, camera, ctx.canvas.width, ctx.canvas.height)).filter(p => p !== null)
-    const faceDistances = mesh.faces.map(f => ({ ...f, distance: getAverageDistance(f, vertices, camera) }))
-    const sortedFaces = faceDistances.toSorted((f1, f2) => f2.distance - f1.distance)
-    meshesData.push({ projected, sortedFaces, avgDistance: faceDistances.reduce((a, b) => a + b.distance, 0) / faceDistances.length })
-  }
-  return meshesData
-}
-
-export const render = (ctx: CanvasRenderingContext2D, meshes: Mesh[], camera: Camera) => {
+export const render = (ctx: CanvasRenderingContext2D, shapes: Shape[], camera: Camera) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
   ctx.fillStyle = 'white'
   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
-  const meshesData = getMeshesData(ctx, meshes, camera)
-  const sortedMeshesData = meshesData.toSorted((a, b) => b.avgDistance - a.avgDistance)
-  for (const meshData of sortedMeshesData) {
-    drawCube(ctx, meshData.projected, meshData.sortedFaces)
+  const shapesData = getShapeData(ctx, shapes, camera)
+  const sortedShapesData = shapesData.toSorted((a, b) => b.avgDistance - a.avgDistance)
+  for (const shapeData of sortedShapesData) {
+    drawShape(ctx, shapeData.projected, shapeData.sortedFaces)
   }
 }
