@@ -1,4 +1,4 @@
-import type { Shape, MeshFace, Vec3 } from '../../types'
+import type { Shape, Vec3 } from '../../types'
 
 const faceColors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange']
 
