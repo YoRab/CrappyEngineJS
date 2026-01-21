@@ -2,6 +2,8 @@
 
 An experimental 3D engine built with vanilla JavaScript and TypeScript. This project is just a fun experiment.
 
+A demo is available at https://yorab.github.io/CrappyEngineJS/
+
 ## 🎮 Features
 
 - 3D rendering of geometric shapes (cubes and spheres) on a 2D canvas
