@@ -1,7 +1,8 @@
-import type { Mesh } from '../types'
+import type { Mesh, Vec3 } from '../types'
 
-export const faceColors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange']
-export const cubeFaces: Mesh['faces'] = [
+const faceColors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange']
+
+const cubeFaces: Mesh['faces'] = [
   { vertices: [0, 1, 2], color: faceColors[0] },
   { vertices: [0, 2, 3], color: faceColors[0] },
   { vertices: [4, 5, 6], color: faceColors[1] },
@@ -16,7 +17,7 @@ export const cubeFaces: Mesh['faces'] = [
   { vertices: [0, 7, 4], color: faceColors[5] }
 ]
 
-export const cubeVertices: Mesh['vertices'] = [
+const cubeVertices: Mesh['vertices'] = [
   { x: 0, y: 0, z: 0 },
   { x: 1, y: 0, z: 0 },
   { x: 1, y: 1, z: 0 },
@@ -26,3 +27,12 @@ export const cubeVertices: Mesh['vertices'] = [
   { x: 1, y: 1, z: 1 },
   { x: 0, y: 1, z: 1 }
 ]
+
+export const createCube = (position: Vec3, size = 1) => {
+  return {
+    type: 'cube',
+    position,
+    vertices: cubeVertices.map(v => ({ x: v.x * size, y: v.y * size, z: v.z * size })),
+    faces: cubeFaces
+  }
+}
