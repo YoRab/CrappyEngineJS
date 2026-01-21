@@ -4,10 +4,15 @@ export type Vec3 = {
   z: number
 }
 
+export type MeshFace = {
+  vertices: [number, number, number]
+  color: string
+}
+
 export type Mesh = {
   position: Vec3
   vertices: Vec3[]
-  faces: [number, number, number, string][]
+  faces: MeshFace[]
 }
 
 export type Camera = {
