@@ -7,7 +7,7 @@ class Camera {
   public pitch: number
   constructor() {
     this.position = new Vec3(0, -0.5, -5)
-    this.fov = 400
+    this.fov = 600
     this.yaw = 0 // left / right
     this.pitch = 0 // up / down
   }
