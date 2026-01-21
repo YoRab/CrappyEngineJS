@@ -9,7 +9,8 @@ import { render } from './utils/render'
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <h1><img src="${crappyLogo}" class="logo" alt="Logo de CrappyEngineJs" />CrappyEngineJs</h1>
     <p class="subtitle">
-      Crappy engine is a 3D engine built with vanilla JavaScript. It is an experiment with no purpose and no future.
+      Crappy engine is a 3D engine built with vanilla JavaScript. It is an experiment with no purpose and no future.<br/>
+      Use the <strong>arrow keys</strong> or <strong>ZQSD</strong> to move the camera, the <strong>mouse</strong> to look around and the <strong>wheel</strong> to move up and down.
     </p>
     <div class="canvas-container">
       <canvas class="canvas" width="1280" height="720"></canvas>
