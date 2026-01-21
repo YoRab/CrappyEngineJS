@@ -1,10 +1,9 @@
-import Camera from './Camera'
-import Mesh from './model/Mesh'
-import Renderer from './Renderer'
+import type { Camera, Renderer } from './types'
 import { cubeVertices, cubeFaces } from './vertices/cube'
 import crappyLogo from '/vite.svg'
 import './style.css'
-import Vec3 from './model/Vec3'
+import { CAMERA_DEFAULT_POSITION, CAMERA_FOV } from './constants'
+import { render } from './utils'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <h1><img src="${crappyLogo}" class="logo" alt="Logo de CrappyEngineJs" />CrappyEngineJs</h1>
@@ -17,41 +16,43 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `
 const canvas = document.querySelector<HTMLCanvasElement>('.canvas')!
 
-const renderer = new Renderer(canvas)
-const camera = new Camera()
-const cube = new Mesh(new Vec3(0, 0, 0), cubeVertices, cubeFaces)
-const cube2 = new Mesh(new Vec3(2, 2, 1), cubeVertices, cubeFaces)
-const cube3 = new Mesh(new Vec3(-1, -1, 1), cubeVertices, cubeFaces)
+const renderer: Renderer = { ctx: canvas.getContext('2d')!, width: canvas.width, height: canvas.height }
+const camera: Camera = { position: CAMERA_DEFAULT_POSITION, fov: CAMERA_FOV, yaw: 0, pitch: 0 }
+const cube = { position: { x: 0, y: 0, z: 0 }, vertices: cubeVertices, faces: cubeFaces }
+const cube2 = { position: { x: 2, y: 2, z: 1 }, vertices: cubeVertices, faces: cubeFaces }
+const cube3 = { position: { x: -1, y: -1, z: 1 }, vertices: cubeVertices, faces: cubeFaces }
 const shapes = [cube, cube2, cube3]
+
 const loop = () => {
-  renderer.render(shapes, camera)
+  render(renderer.ctx, shapes, camera)
   requestAnimationFrame(loop)
 }
 
 const moveCamera = (e: KeyboardEvent) => {
-  const speed = 0.2
+  const forwardSpeed = 0.2
+  const sideSpeed = 0.1
 
-  const forward = new Vec3(-Math.sin(camera.yaw) * Math.cos(camera.pitch), -Math.sin(camera.pitch), Math.cos(camera.yaw) * Math.cos(camera.pitch))
+  const forward = { x: -Math.sin(camera.yaw) * Math.cos(camera.pitch), y: -Math.sin(camera.pitch), z: Math.cos(camera.yaw) * Math.cos(camera.pitch) }
 
-  const right = new Vec3(Math.cos(camera.yaw), 0, Math.sin(camera.yaw))
+  const right = { x: Math.cos(camera.yaw), y: 0, z: Math.sin(camera.yaw) }
 
   if (['z', 'ArrowUp'].includes(e.key)) {
-    camera.position.x += forward.x * speed
-    camera.position.y += forward.y * speed
-    camera.position.z += forward.z * speed
+    camera.position.x += forward.x * forwardSpeed
+    camera.position.y += forward.y * forwardSpeed
+    camera.position.z += forward.z * forwardSpeed
   }
   if (['s', 'ArrowDown'].includes(e.key)) {
-    camera.position.x -= forward.x * speed
-    camera.position.y -= forward.y * speed
-    camera.position.z -= forward.z * speed
+    camera.position.x -= forward.x * forwardSpeed
+    camera.position.y -= forward.y * forwardSpeed
+    camera.position.z -= forward.z * forwardSpeed
   }
   if (['q', 'ArrowLeft'].includes(e.key)) {
-    camera.position.x -= right.x * speed
-    camera.position.z -= right.z * speed
+    camera.position.x -= right.x * sideSpeed
+    camera.position.z -= right.z * sideSpeed
   }
   if (['d', 'ArrowRight'].includes(e.key)) {
-    camera.position.x += right.x * speed
-    camera.position.z += right.z * speed
+    camera.position.x += right.x * sideSpeed
+    camera.position.z += right.z * sideSpeed
   }
 }
 
