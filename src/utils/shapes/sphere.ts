@@ -30,8 +30,8 @@ export const createSphere = (position: Vec3, size = 1): Shape => {
       const a = lat * row + lon
       const b = a + row
 
-      faces.push({ vertices: [a, b, a + 1], color: '#ccc' })
-      faces.push({ vertices: [b, b + 1, a + 1], color: '#aaa' })
+      faces.push({ vertices: [a, a + 1, b], color: '#ccc' })
+      faces.push({ vertices: [b, a + 1, b + 1], color: '#aaa' })
     }
   }
 

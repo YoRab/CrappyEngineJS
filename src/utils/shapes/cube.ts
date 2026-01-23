@@ -3,8 +3,8 @@ import type { Shape, Vec3 } from '../../types'
 const faceColors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange']
 
 const faces: Shape['faces'] = [
-  { vertices: [0, 1, 2], color: faceColors[0] },
-  { vertices: [0, 2, 3], color: faceColors[0] },
+  { vertices: [0, 2, 1], color: faceColors[0] },
+  { vertices: [0, 3, 2], color: faceColors[0] },
   { vertices: [4, 5, 6], color: faceColors[1] },
   { vertices: [4, 6, 7], color: faceColors[1] },
   { vertices: [0, 1, 5], color: faceColors[2] },
@@ -13,8 +13,8 @@ const faces: Shape['faces'] = [
   { vertices: [2, 7, 6], color: faceColors[3] },
   { vertices: [1, 2, 6], color: faceColors[4] },
   { vertices: [1, 6, 5], color: faceColors[4] },
-  { vertices: [0, 3, 7], color: faceColors[5] },
-  { vertices: [0, 7, 4], color: faceColors[5] }
+  { vertices: [0, 7, 3], color: faceColors[5] },
+  { vertices: [0, 4, 7], color: faceColors[5] }
 ]
 
 const vertices: Shape['vertices'] = [
